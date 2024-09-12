@@ -9,6 +9,7 @@ import { DataTable } from "~/components/datatable/data-table";
 import { columns } from "~/components/datatable/columns";
 import Table from "~/table";
 import MainLayout from "~/components/main-layout";
+import { DataTableToolbar } from "~/components/datatable/toolbar";
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const q = url.searchParams.get("q");
@@ -31,6 +32,7 @@ export default function Index() {
   const table = Table({ data: team });
   return (
     <MainLayout title="Team" description="Meet our team">
+      <DataTableToolbar table={table} />
       <DataTable table={table} columns={columns} />
     </MainLayout>
   );

@@ -1,5 +1,6 @@
 import {
   SortingState,
+  VisibilityState,
   getCoreRowModel,
   getFacetedRowModel,
   getFacetedUniqueValues,
@@ -14,16 +15,17 @@ import { columns } from "~/components/datatable/columns";
 
 export default function Table({ data }: { data: ContactRecord[] }) {
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    avatar: false,
+    name: false,
+  });
   const [rowSelection, setRowSelection] = useState({});
   const table = useReactTable({
     data,
     columns,
     state: {
       sorting,
-      columnVisibility: {
-        avatar: false,
-        name: false,
-      },
+      columnVisibility,
       rowSelection,
     },
     enableRowSelection: true,
@@ -36,6 +38,7 @@ export default function Table({ data }: { data: ContactRecord[] }) {
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
+    onColumnVisibilityChange: setColumnVisibility,
   });
   return table;
 }

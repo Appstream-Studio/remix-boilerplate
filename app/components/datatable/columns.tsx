@@ -32,10 +32,12 @@ export const columns: ColumnDef<ContactRecord>[] = [
   },
   {
     accessorKey: "avatar",
+    enableHiding: false,
   },
   {
     id: "name",
     accessorFn: (row) => `${row.first} ${row.last}`,
+    enableHiding: false,
   },
   {
     id: "member",
