@@ -2,6 +2,6 @@
   "extends": ["@remix-run/eslint-config", "@remix-run/eslint-config/node", "prettier" ],
   "plugins": ["prettier"],
   "rules": {
-    // Add custom rules here
+    "react/prop-types": "off"
   }
 }

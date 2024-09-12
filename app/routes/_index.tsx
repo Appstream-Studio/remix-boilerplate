@@ -1,4 +1,20 @@
-import type { MetaFunction } from "@remix-run/node";
+import {
+  json,
+  type LoaderFunctionArgs,
+  type MetaFunction,
+} from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import { getContacts } from "~/data";
+import { DataTable } from "~/components/datatable/data-table";
+import { columns } from "~/components/datatable/columns";
+import Table from "~/table";
+import MainLayout from "~/components/main-layout";
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const url = new URL(request.url);
+  const q = url.searchParams.get("q");
+  const contacts = await getContacts(q);
+  return json({ contacts, q });
+};
 
 export const meta: MetaFunction = () => {
   return [
@@ -11,9 +27,11 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
+  const { contacts: team } = useLoaderData<typeof loader>();
+  const table = Table({ data: team });
   return (
-    <div className="font-sans p-4">
-      <h1 className="text-3xl">Welcome to our boilerplate</h1>
-    </div>
+    <MainLayout title="Team" description="Meet our team">
+      <DataTable table={table} columns={columns} />
+    </MainLayout>
   );
 }

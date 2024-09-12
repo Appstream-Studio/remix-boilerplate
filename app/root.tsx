@@ -32,7 +32,13 @@ export default function AppWithProviders() {
     <ThemeProvider specifiedTheme={data.theme} themeAction="/action/set-theme">
       <Layout>
         <Header />
-        <App />
+        <main className="flex-1">
+          <div className="container flex-1 items-start md:grid md:gap-6 lg:gap-10">
+            <div className="mt-6">
+              <App />
+            </div>
+          </div>
+        </main>
       </Layout>
     </ThemeProvider>
   );
@@ -52,6 +58,7 @@ function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         {children}
+
         <ScrollRestoration />
         <Scripts />
       </body>
