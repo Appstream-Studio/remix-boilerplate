@@ -1,6 +1,5 @@
 "use client";
 
-import { DataTablePagination } from "~/components/datatable/data-table-pagination";
 import {
   Table,
   TableBody,
@@ -75,7 +74,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} />
+      {/* <DataTablePagination table={table} /> */}
     </div>
   );
 }

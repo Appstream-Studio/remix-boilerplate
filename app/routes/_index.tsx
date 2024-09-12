@@ -10,14 +10,16 @@ import { columns } from "~/components/datatable/columns";
 import Table from "~/table";
 import MainLayout from "~/components/main-layout";
 import { DataTableToolbar } from "~/components/datatable/toolbar";
+import { PaginationBar } from "~/components/datatable/pagination-bar";
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const q = url.searchParams.get("q") || null;
-  const pageSize = parseInt(url.searchParams.get("pageSize") || "2", 10);
-  const pageIndex = parseInt(url.searchParams.get("pageIndex") || "0", 10);
-  const contacts = await getContacts(pageSize, pageIndex, q);
+  const $top = Number(url.searchParams.get("$top")) || 10;
+  const $skip = Number(url.searchParams.get("$skip")) || 0;
+  const dbContacts = await getContacts(q);
+  const contacts = dbContacts.slice($skip, $skip + $top);
 
-  return json({ contacts, q });
+  return json({ contacts, q, total: dbContacts.length });
 };
 
 export const meta: MetaFunction = () => {
@@ -31,12 +33,13 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
-  const { contacts: team, q } = useLoaderData<typeof loader>();
+  const { contacts: team, q, total } = useLoaderData<typeof loader>();
   const table = Table({ data: team });
   return (
     <MainLayout title="Team" description="Meet our team">
       <DataTableToolbar table={table} q={q} />
       <DataTable table={table} columns={columns} />
+      <PaginationBar total={total} />
     </MainLayout>
   );
 }

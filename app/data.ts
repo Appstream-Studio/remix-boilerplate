@@ -23,13 +23,6 @@ export type ContactRecord = ContactMutation & {
   createdAt: string;
 };
 
-export type PaginatedContacts = {
-  contacts: ContactRecord[];
-  rowCount: number;
-  pageCount: number;
-  pageSize: number;
-  pageIndex: number;
-};
 ////////////////////////////////////////////////////////////////////////////////
 // This is just a fake DB table. In a real app you'd be talking to a real db or
 // fetching from an existing API.
@@ -71,10 +64,8 @@ const fakeContacts = {
 ////////////////////////////////////////////////////////////////////////////////
 // Handful of helper functions to be called from route loaders and actions
 export async function getContacts(
-  pageSize: number,
-  pageIndex: number,
   query?: string | null,
-): Promise<PaginatedContacts> {
+): Promise<ContactRecord[]> {
   await new Promise((resolve) => setTimeout(resolve, 500));
   let contacts = await fakeContacts.getAll();
 
@@ -85,25 +76,9 @@ export async function getContacts(
     });
   }
 
-  const rowCount = contacts.length;
-  const pageCount = Math.ceil(rowCount / pageSize);
-
-  // Sort contacts before slicing them for pagination
   contacts = contacts.sort(sortBy("last", "createdAt"));
 
-  // Implement pagination by slicing the contacts array
-  const paginatedContacts = contacts.slice(
-    pageIndex * pageSize,
-    (pageIndex + 1) * pageSize,
-  );
-
-  return {
-    contacts: paginatedContacts,
-    rowCount,
-    pageCount,
-    pageSize,
-    pageIndex,
-  };
+  return contacts;
 }
 
 export async function createEmptyContact() {
