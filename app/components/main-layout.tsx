@@ -1,5 +1,8 @@
 import React from "react";
-import { PageHeaderDescription, PageHeaderHeading } from "./page-header";
+import {
+  PageHeaderDescription,
+  PageHeaderHeading,
+} from "~/components/page-header";
 
 interface MainLayoutProps {
   title: string;

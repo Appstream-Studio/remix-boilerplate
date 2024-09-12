@@ -18,6 +18,7 @@ export default function Table({ data }: { data: ContactRecord[] }) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     avatar: false,
     name: false,
+    id: false,
   });
   const [rowSelection, setRowSelection] = useState({});
   const table = useReactTable({

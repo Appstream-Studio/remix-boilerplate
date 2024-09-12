@@ -1,8 +1,4 @@
-import {
-  json,
-  type LoaderFunctionArgs,
-  type MetaFunction,
-} from "@remix-run/node";
+import { json, type LoaderFunctionArgs } from "@remix-run/node";
 import { NavLink, useLoaderData } from "@remix-run/react";
 import { getContacts } from "~/data";
 import { DataTable } from "~/components/datatable/data-table";
@@ -13,7 +9,7 @@ import { DataTableToolbar } from "~/components/datatable/toolbar";
 import { PaginationBar } from "~/components/datatable/pagination-bar";
 
 import url from "~/lib/url";
-import { Button } from "../components/ui/button";
+import { Button } from "~/components/ui/button";
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const q = url.searchParams.get("q") || null;
@@ -23,16 +19,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const contacts = dbContacts.slice($skip, $skip + $top);
 
   return json({ contacts, q, total: dbContacts.length });
-};
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Appstream Studio" },
-    {
-      name: "description",
-      content: "Appstream Studio Remix boilerplate",
-    },
-  ];
 };
 
 export default function Index() {

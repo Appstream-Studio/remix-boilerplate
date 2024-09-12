@@ -1,26 +1,17 @@
-import { Form, MetaFunction, redirect, useNavigate } from "@remix-run/react";
+import { ActionFunctionArgs } from "@remix-run/node";
+import { Form, redirect, useNavigate } from "@remix-run/react";
 import MainLayout from "~/components/main-layout";
+import { PageHeader, PageHeaderHeading } from "~/components/page-header";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
-import { PageHeader, PageHeaderHeading } from "../components/page-header";
 import { createNewContact } from "~/data";
-import { ActionFunctionArgs } from "@remix-run/node";
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Appstream Studio" },
-    {
-      name: "description",
-      content: "Appstream Studio Remix boilerplate",
-    },
-  ];
-};
+import url from "~/lib/url";
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const data = Object.fromEntries(formData);
-  const contact = await createNewContact(data);
-  return redirect(`/members/${contact.id}/edit`);
+  await createNewContact(data);
+  return redirect(url.home());
 };
 export default function MembersIndex() {
   const navigate = useNavigate();

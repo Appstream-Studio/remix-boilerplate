@@ -1,6 +1,7 @@
 import {
   Links,
   Meta,
+  MetaFunction,
   Outlet,
   Scripts,
   ScrollRestoration,
@@ -23,6 +24,15 @@ export async function loader({ request }: LoaderFunctionArgs) {
     theme: getTheme(),
   };
 }
+export const meta: MetaFunction = () => {
+  return [
+    { title: "Appstream Studio" },
+    {
+      name: "description",
+      content: "Appstream Studio Remix boilerplate",
+    },
+  ];
+};
 
 export const links: LinksFunction = () => [{ rel: "stylesheet", href: styles }];
 
