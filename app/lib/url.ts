@@ -13,6 +13,7 @@ const defineURL = <Args extends unknown[] = []>(
 
 const url = {
   home: defineURL("/"),
+  createMember: defineURL("/members"),
 };
 
 export default url;

@@ -3,7 +3,7 @@ import {
   type LoaderFunctionArgs,
   type MetaFunction,
 } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { NavLink, useLoaderData } from "@remix-run/react";
 import { getContacts } from "~/data";
 import { DataTable } from "~/components/datatable/data-table";
 import { columns } from "~/components/datatable/columns";
@@ -11,6 +11,9 @@ import Table from "~/table";
 import MainLayout from "~/components/main-layout";
 import { DataTableToolbar } from "~/components/datatable/toolbar";
 import { PaginationBar } from "~/components/datatable/pagination-bar";
+
+import url from "~/lib/url";
+import { Button } from "../components/ui/button";
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
   const q = url.searchParams.get("q") || null;
@@ -36,7 +39,17 @@ export default function Index() {
   const { contacts: team, q, total } = useLoaderData<typeof loader>();
   const table = Table({ data: team });
   return (
-    <MainLayout title="Team" description="Meet our team">
+    <MainLayout
+      title="Team"
+      description="Meet our team"
+      rightChildren={
+        <Button asChild>
+          <NavLink prefetch="intent" to={url.createMember()}>
+            Create
+          </NavLink>
+        </Button>
+      }
+    >
       <DataTableToolbar table={table} q={q} />
       <DataTable table={table} columns={columns} />
       <PaginationBar total={total} />

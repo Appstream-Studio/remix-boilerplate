@@ -4,6 +4,7 @@ import { PageHeaderDescription, PageHeaderHeading } from "./page-header";
 interface MainLayoutProps {
   title: string;
   description: string;
+  rightChildren?: React.ReactNode;
   children: React.ReactNode;
 }
 
@@ -11,6 +12,7 @@ export default function MainLayout({
   title,
   children,
   description,
+  rightChildren,
 }: MainLayoutProps) {
   return (
     <>
@@ -19,6 +21,7 @@ export default function MainLayout({
           <PageHeaderHeading>{title}</PageHeaderHeading>
           <PageHeaderDescription>{description}</PageHeaderDescription>
         </div>
+        {rightChildren}
       </div>
       <div className="mb-4">{children}</div>
     </>

@@ -81,8 +81,8 @@ export async function getContacts(
   return contacts;
 }
 
-export async function createEmptyContact() {
-  const contact = await fakeContacts.create({});
+export async function createNewContact(values: ContactMutation) {
+  const contact = await fakeContacts.create(values);
   return contact;
 }
 
