@@ -12,8 +12,11 @@ import MainLayout from "~/components/main-layout";
 import { DataTableToolbar } from "~/components/datatable/toolbar";
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
-  const q = url.searchParams.get("q");
-  const contacts = await getContacts(q);
+  const q = url.searchParams.get("q") || null;
+  const pageSize = parseInt(url.searchParams.get("pageSize") || "2", 10);
+  const pageIndex = parseInt(url.searchParams.get("pageIndex") || "0", 10);
+  const contacts = await getContacts(pageSize, pageIndex, q);
+
   return json({ contacts, q });
 };
 
@@ -28,11 +31,11 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Index() {
-  const { contacts: team } = useLoaderData<typeof loader>();
+  const { contacts: team, q } = useLoaderData<typeof loader>();
   const table = Table({ data: team });
   return (
     <MainLayout title="Team" description="Meet our team">
-      <DataTableToolbar table={table} />
+      <DataTableToolbar table={table} q={q} />
       <DataTable table={table} columns={columns} />
     </MainLayout>
   );

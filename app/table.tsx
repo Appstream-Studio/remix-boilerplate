@@ -10,10 +10,10 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useState } from "react";
-import { ContactRecord } from "~/data";
+import { ContactRecord, PaginatedContacts } from "~/data";
 import { columns } from "~/components/datatable/columns";
 
-export default function Table({ data }: { data: ContactRecord[] }) {
+export default function Table({ data }: { data: PaginatedContacts }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
     avatar: false,
@@ -21,12 +21,19 @@ export default function Table({ data }: { data: ContactRecord[] }) {
   });
   const [rowSelection, setRowSelection] = useState({});
   const table = useReactTable({
-    data,
+    data: data.contacts,
     columns,
+    manualPagination: true,
+    rowCount: data.rowCount,
+    pageCount: data.pageCount,
     state: {
       sorting,
       columnVisibility,
       rowSelection,
+      pagination: {
+        pageSize: data.pageSize,
+        pageIndex: data.pageIndex,
+      },
     },
     enableRowSelection: true,
     getColumnCanGlobalFilter: () => true,

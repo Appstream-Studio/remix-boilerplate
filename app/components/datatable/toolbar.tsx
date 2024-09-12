@@ -6,27 +6,47 @@ import { Table } from "@tanstack/react-table";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { DataTableViewOptions } from "~/components/datatable/data-table-view-options";
+import { Form, useNavigation, useSubmit } from "@remix-run/react";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
+  q: string | null;
 }
 
 export function DataTableToolbar<TData>({
   table,
+  q,
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0;
+  const submit = useSubmit();
+  const navigation = useNavigation();
+  const searching =
+    navigation.location &&
+    new URLSearchParams(navigation.location.search).has("q");
 
   return (
     <div className="flex items-center justify-between mb-4">
       <div className="flex flex-1 items-center space-x-2">
-        <Input
-          placeholder="Filter ..."
-          value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("name")?.setFilterValue(event.target.value)
-          }
-          className="h-8 w-[150px] lg:w-[250px]"
-        />
+        <Form
+          id="search-form"
+          role="search"
+          onChange={(event) => {
+            const isFirstSearch = q === null;
+            submit(event.currentTarget, {
+              replace: !isFirstSearch,
+            });
+          }}
+        >
+          <Input
+            id="q"
+            aria-label="Search contacts"
+            defaultValue={q || ""}
+            placeholder="Search ..."
+            type="search"
+            name="q"
+          />
+          <div id="search-spinner" aria-hidden hidden={!searching} />
+        </Form>
 
         {isFiltered && (
           <Button
